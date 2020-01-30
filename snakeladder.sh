@@ -9,7 +9,6 @@ echo "Rolls the die : "$dieNumber
 }
 function newPosition()
 {
-
 	#rollDie
 while [[ $singlePlayerPosition -lt $WINNINGPOSITION ]]
 do
@@ -25,7 +24,6 @@ do
 			  then
 				singlePlayerPosition=$previousPosition
 			  fi
-	#	singlePlayerPosition=$(($singlePlayerPosition+$dieNumber))
 		;;
 		2)
 		singlePlayerPosition=$(($singlePlayerPosition-$dieNumber))
