@@ -19,7 +19,13 @@ do
 		singlePlayerPosition=$singlePlayerPosition
 		;;
 		1)
+		previousPosition=$singlePlayerPosition
 		singlePlayerPosition=$(($singlePlayerPosition+$dieNumber))
+			if [ $singlePlayerPosition -gt $WINNINGPOSITION ]
+			  then
+				singlePlayerPosition=$previousPosition
+			  fi
+	#	singlePlayerPosition=$(($singlePlayerPosition+$dieNumber))
 		;;
 		2)
 		singlePlayerPosition=$(($singlePlayerPosition-$dieNumber))
