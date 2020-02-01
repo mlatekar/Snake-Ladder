@@ -2,10 +2,13 @@ echo "Welcome to Snake and Ladder Game"
 STARTINGPOSITION=0
 singlePlayerPosition=0
 WINNINGPOSITION=100
+noOfDicePlayed=0
+declare -A dicePlayed
 function rollDie()
 {
 dieNumber=$(($((RANDOM%6))+1))
 echo "Rolls the die : "$dieNumber
+((noOfDicePlayed++))
 }
 function newPosition()
 {
@@ -20,20 +23,24 @@ do
 		1)
 		previousPosition=$singlePlayerPosition
 		singlePlayerPosition=$(($singlePlayerPosition+$dieNumber))
-			if [ $singlePlayerPosition -gt $WINNINGPOSITION ]
+			if [[ $singlePlayerPosition -gt $WINNINGPOSITION ]]
 			  then
 				singlePlayerPosition=$previousPosition
 			  fi
-		;;
-		2)
+		;;		2)
 		singlePlayerPosition=$(($singlePlayerPosition-$dieNumber))
-    		if [ $singlePlayerPosition -lt 0 ]
+		    	
+		if [ $singlePlayerPosition -lt 0 ]
 	   	  then
 		   	singlePlayerPosition=$STARTINGPOSITION
-		   fi
-	   ;;
-	esac
+		 fi
+		;;
+esac
+		dicePlayed[$noOfDicePlayed]=$singlePlayerPosition
+		echo ${dicePlayed[noOfDicePlayed]}
+	
 echo "New position of player : " $singlePlayerPosition
+echo "dice roll time : " ${dicePlayed[@]}
 done
 }
 newPosition
