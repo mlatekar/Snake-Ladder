@@ -1,4 +1,4 @@
-#!/bin/bash -x
+
 echo "Welcome to Snake and Ladder Game"
 
 #constant
@@ -10,7 +10,7 @@ SNAKE=2
 
 #variables
 noOfDicePlayed=0
-singlePlayerPosition=$STARTINGPOSITION
+playerPosition=$STARTINGPOSITION
 firstPlayer=$STARTINGPOSITION
 secondPlayer=$STARTINGPOSITION
 flag=0
@@ -18,82 +18,85 @@ flag=0
 #declare dictionay
 declare -A dicePlayed
 
-
-function switchPlayer()  #switch the player1 and player2
+#switch the player1 and player2
+function switchPlayer()  
 { 
 	if [[ $flag -eq 0 ]]
 	then 
 		noOfDicePlayed=$(( noOfDicePlayed+1 ))
-		singlePlayerPosition=$firstPlayer
+		PlayerPosition=$firstPlayer
 		player=1
 		rollDie
-		firstPlayer=$singlePlayerPosition
+		firstPlayer=$playerPosition
 		flag=1
 	else
-		secondPlayer=$singlePlayerPosition
-		singlePlayerPosition=$secondPlayer
+		secondPlayer=$playerPosition
+		playerPosition=$secondPlayer
 		player=2
       rollDie
-      secondPlayer=$singlePlayerPosition
+      secondPlayer=$playerPosition
       flag=0
 	fi
 }
-
-function rollDie()  # genrate number 1 to 6
+#genrate number 1 to 6
+function rollDie() 
 {
 	dieNumber=$(($((RANDOM%6))+1))
 	echo "Rolls the die : "$dieNumber
-	option	 #calling option function 
+	#calling option function	
+	option	  
 }
 
 function option()  
 {
-	case $((RANDOM%3)) in
+   	case $((RANDOM%3)) in
 		$NOPLAY)
-					singlePlayerPosition=$singlePlayerPosition
-					;;
+			playerPosition=$playerPosition
+			;;
 
 		$LADDER)
-					singlePlayerPosition=$(($singlePlayerPosition+$dieNumber))
-						if [[ $singlePlayerPosition -gt $WINNINGPOSITION ]]
-			  				then
-								singlePlayerPosition=$((singlePlayerPosition-dieNumber))
-		   			fi
-					;;
+			playerPosition=$(($playerPosition+$dieNumber))
+			if [[ $playerPosition -gt $WINNINGPOSITION ]]
+			then
+				playerPosition=$((playerPosition-dieNumber))
+			fi
+			;;
 
 		$SNAKE)
-					singlePlayerPosition=$(($singlePlayerPosition-$dieNumber))
-		 				if [ $singlePlayerPosition -lt $STARTINGPOSITION ]
-	   	  				then
-		   					singlePlayerPosition=$STARTINGPOSITION
-		 				fi
-					;;
+			playerPosition=$(($playerPosition-$dieNumber))
+			if [ $playerPosition -lt $STARTINGPOSITION ]
+	   	then
+   			playerPosition=$STARTINGPOSITION
+			fi
+			;;
    esac
+	#calling position function
 	position
-
-   echo "New position of player : " $singlePlayerPosition
+	echo "New position of player : " $playerPosition 
 }
-
-function position()    #player position store 
+#player position store
+function position()     
 {
-	dicePlayed[Player_"$player"_"$noOfDicePlayed"]=$singlePlayerPosition
+	dicePlayed[Player_"$player"_"$noOfDicePlayed"]=$playerPosition
 }
 
 function newPosition()
 {
-   while [[ $singlePlayerPosition -ne $WINNINGPOSITION ]]
-   	do
-	  		 switchPlayer
-   	done
+   while [[ $playerPosition -ne $WINNINGPOSITION ]]
+   do
+	#calling switchplayer function
+	switchPlayer
+   done
 }
 function winPlayer()
 {
 	if [[ $firstPlayer -gt $secondPlayer ]]
-		then
-			echo "player 1 win"
+	then
+		echo "player 1 win"
 	else
 		echo "Player 2 win"
 	fi
 }
+#start program with calling functions
 newPosition
 winPlayer
